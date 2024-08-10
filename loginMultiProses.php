@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'koneksi.php';
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
@@ -12,13 +11,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
     if (mysqli_num_rows($result) > 0) {
         if (password_verify($password, $row['password'])) {
-            $_SESSION['username'] = $username;
-            $_SESSION['role'] = $row['role'];
-
             if ($row['role'] == 'admin') {
-                header("Location: adminDashboard.php");
+                header("Location: adminDashboard.html");
             } elseif ($row['role'] == 'user') {
-                header("Location: userDashboard.php");
+                header("Location: userDashboard.html");
             } else {
                 echo "Role tidak dikenal.";
             }

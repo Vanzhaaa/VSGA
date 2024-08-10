@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Beli</title>
+    <script>
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function handleSubmit() {
+            var product = document.getElementById("product").value;
+            var quantity = document.getElementById("quantity").value;
+            
+            setCookie("product", product, 1); // Simpan cookie selama 1 hari
+            setCookie("quantity", quantity, 1); // Simpan cookie selama 1 hari
+            
+            alert("Product and quantity have been saved to cookies!");
+        }
+
+        function loadCookies() {
+            var product = getCookie("product");
+            var quantity = getCookie("quantity");
+
+            if (product && quantity) {
+                document.getElementById("product").value = product;
+                document.getElementById("quantity").value = quantity;
+            }
+        }
+
+        window.onload = function() {
+            loadCookies();
+        }
+    </script>
+</head>
+<body>
+    <h2>Form Beli</h2>
+    <form onsubmit="handleSubmit(); return false;">
+        <label for="product">Product:</label>
+        <input type="text" id="product" name="product" required><br><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" required><br><br>
+
+        <input type="submit" value="Save">
+    </form>
+</body>
+</html>

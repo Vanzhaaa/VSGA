@@ -1,11 +1,12 @@
 <?php
-$servername = "localhost";
-$database = "tsa_web";
-$username = "root";
+$host = "localhost";
+$user = "root";
 $password = "";
-$connect = new mysqli($servername, $username, $password, $database);
-if ($connect->connect_error) {
-    die("Koneksi gagal: " . $connect->connect_error);
+$database = "tsa_web";
+
+$koneksi = mysqli_connect($host, $user, $password, $database);
+
+if (!$koneksi) {
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
-echo "Koneksi berhasil";
 ?>

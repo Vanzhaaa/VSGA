@@ -1,21 +1,28 @@
 <?php
-include "koneksi.php";
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = mysqli_real_escape_string($connect, $_POST['username']);
-    $password = md5($_POST['password']);
-    $query = "SELECT * FROM user WHERE username=? AND password=?";
-    $stmt = $connect->prepare($query);
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-        echo "Anda berhasil login ";
-        echo "<a href='admindashboard.html'>Admin</a>";
+include 'koneksi.php';
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $query = "SELECT * FROM user WHERE username='$username'";
+    $result = mysqli_query($koneksi, $query);
+    $row = mysqli_fetch_assoc($result);
+
+    if (mysqli_num_rows($result) > 0) {
+        if (password_verify($password, $row['password'])) {
+            if ($row['role'] == 'admin') {
+                header("Location: adminDashboard.html");
+            } else {
+                echo "Anda tidak memiliki akses admin.";
+            }
+        } else {
+            echo "Password salah.";
+        }
     } else {
-        echo "Username atau password salah ";
-        echo "<a href='loginForm.html'>Login Form</a>";
+        echo "Username tidak ditemukan.";
     }
-    $stmt->close();
-    $connect->close();
+} else {
+    echo "Data username atau password tidak dikirim.";
 }
 ?>

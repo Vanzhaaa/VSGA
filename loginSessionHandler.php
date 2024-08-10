@@ -16,9 +16,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             $_SESSION['role'] = $row['role'];
 
             if ($row['role'] == 'admin') {
-                header("Location: adminDashboard.php");
+                header("Location: adminPage.php");
             } elseif ($row['role'] == 'user') {
-                header("Location: userDashboard.php");
+                header("Location: userPage.php");
             } else {
                 echo "Role tidak dikenal.";
             }
